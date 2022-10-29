@@ -19,10 +19,18 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
+        'birthday',
+        'location',
+        'about_me',
         'password',
-    ];
+        'gender_id'
 
+    ];
+    public function gender(){
+        return $this->belongsTo(Gender::class, 'gender_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
