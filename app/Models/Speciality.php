@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Speciality extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
     ];
 }

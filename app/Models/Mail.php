@@ -9,6 +9,6 @@ class Mail extends Model
 {
     protected $fillable = [
         'email',
-        'message'
+        'message',
     ];
 }
