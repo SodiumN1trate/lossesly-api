@@ -25,6 +25,7 @@ class User extends Authenticatable
         'location',
         'about_me',
         'is_expert',
+        'rating',
         'password',
         'gender_id',
     ];

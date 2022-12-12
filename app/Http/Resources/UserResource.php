@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'about_me'=>$this->about_me,
             'is_expert'=>$this->is_expert,
             'gender_id'=>$this->gender_id,
+            'rating' => $this->rating,
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
         ];

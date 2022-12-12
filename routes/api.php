@@ -1,11 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\SpecialityController;
 use App\Http\Controllers\Api\StatusController;
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('/specialities',SpecialityController::class);
-Route::apiResource('/genders',GenderController::class);
-Route::apiResource('/statuses',StatusController::class);
-Route::apiResource('/mails',MailController::class);
+Route::apiResource('specialities',SpecialityController::class);
+Route::apiResource('genders',GenderController::class);
+Route::apiResource('statuses',StatusController::class);
+Route::apiResource('mails',MailController::class);
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
