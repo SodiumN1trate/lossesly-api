@@ -1,6 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GenderController;
+use App\Http\Controllers\Api\MailController;
+use App\Http\Controllers\Api\SpecialityController;
+use App\Http\Controllers\Api\StatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +17,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResource('specialities',SpecialityController::class);
+Route::apiResource('genders',GenderController::class);
+Route::apiResource('statuses',StatusController::class);
+Route::apiResource('mails',MailController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::get('/logout', [AuthController::class, 'logout']);
 });
