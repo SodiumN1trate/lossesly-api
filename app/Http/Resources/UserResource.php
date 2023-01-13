@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class UserResource extends JsonResource
 {
@@ -18,6 +19,7 @@ class UserResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'surname'=>$this->surname,
+            'avatar' => isset($this->avatar) ? URL::signedRoute('avatar', ['user_id' => 1]) : 'https://www.w3schools.com/w3images/avatar2.png',
             'email'=>$this->email,
             'birthday'=>$this->birthday,
             'location'=>$this->location,
