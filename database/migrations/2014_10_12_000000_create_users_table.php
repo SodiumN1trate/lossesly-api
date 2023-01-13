@@ -17,11 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
+            $table->string('avatar')->nullable();
             $table->string('email')->unique();
             $table->date('birthday')->nullable();
             $table->string('location')->nullable();
             $table->longText('about_me')->nullable();
-            $table->boolean('is_expert');
+            $table->float('rating')->default(0);
+            $table->boolean('is_expert')->default(false);
             $table->string('password');
             $table->timestamps();
         });

@@ -1,7 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GenderController;
+use App\Http\Controllers\Api\MailController;
+use App\Http\Controllers\Api\SpecialityController;
+use App\Http\Controllers\Api\StatusController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\SpecialistApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +19,28 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResources([
+    'specialities' => SpecialityController::class,
+    'genders' => GenderController::class,
+    'statuses' => StatusController::class,
+    'mails' => MailController::class,
+]);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar');
+
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::apiResources([
+        'users' => UserController::class,
+        'specialist_application' => SpecialistApplicationController::class,
+    ]);
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
+
 });
+
+
