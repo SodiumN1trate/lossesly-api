@@ -30,7 +30,7 @@ Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
-
+Route::post('/change_password',[AuthController::class,'change_password']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
