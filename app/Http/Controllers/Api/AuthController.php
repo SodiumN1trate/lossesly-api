@@ -64,23 +64,21 @@ class AuthController extends Controller
             'access_token' => $token,
         ]);
     }
-    public function change_password(Request $request){
+    public function changePassword(Request $request){
         $validated = $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|confirmed',
+            'password' => 'required',
+            'password_confirmation' => 'required',
         ]);
 
-
-        if(!Hash::check($request->old_password, auth()->user()->password)){
-            return back()->with("error", "Parolis ievadīts neparerizi");
+        if(!$validated["password"]==$validated["password_confirmation"]) {
+            return response()->json(["status" => "Zaebca"]);
         }
-
-
-        User::whereId(auth()->user()->id)->update([
-            'password' => Hash::make($request->new_password)
+        $user=User::find(auth()->user()->id);
+        $user->update([
+            'password' => Hash::make($validated["password"])
         ]);
-
-        return back()->with("status", "Parolis veiksmīgi mainīts");
+        return response()->json(["status" => "Parole veiksmīgi nomainīta"]);
     }
     public function logout() {
         auth()->user()->token()->revoke();
