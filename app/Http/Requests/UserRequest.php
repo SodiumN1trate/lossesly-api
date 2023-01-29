@@ -24,10 +24,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'surname' => 'required',
-            'email' => 'required',
-            'password' => 'sometimes',
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'email' => 'required|max:255|email|unique:users',
+            'password' => 'sometimes|max:255',
             'avatar' => 'sometimes|mimes:jpg,jpeg,png|max:12048',
         ];
     }
