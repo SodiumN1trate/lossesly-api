@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attach_spec_application', function (Blueprint $table) {
+        Schema::create('attachment_specialist_application', function (Blueprint $table) {
             $table->id();
             $table->foreignId('specialist_application_id')->constrained('specialist_applications');
             $table->foreignId('attachment_id')->constrained('attachments');
