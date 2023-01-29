@@ -16,23 +16,22 @@ class AuthController extends Controller
             'name' =>'required',
             'surname' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'password_rep' => 'required',
+            'password' => 'required|min:8',
         ]);
 
-        if($validated['password'] !== $validated['password_rep']) {
-            return response()->json([
-                'data' => ['Ievadītās paroles nesakrīt'],
-            ], 403);
-        }
+        $password = $validated['password'];
 
         $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
 
-        if (!Auth::attempt(['email' => $user->email, 'password' => $validated['password_rep']])) {
+        if (!Auth::attempt(['email' => $user->email, 'password' => $password])) {
             return response()->json([
-                'data' => 'Nepareizi ievadīti dati'
+                'errors' => [
+                    'error' => [
+                        'Tāds lietotājs neeksistē!',
+                    ],
+                ],
             ], 403);
         }
 
@@ -45,13 +44,17 @@ class AuthController extends Controller
     }
     public function login(Request $request) {
         $validated = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         if (!Auth::attempt($validated)) {
             return response()->json([
-                'data' => ['Nepareizi ievadīti dati'],
+                'errors' => [
+                    'error' => [
+                        'Tāds lietotājs neeksistē!',
+                    ],
+                ],
             ], 403);
         }
 
@@ -61,7 +64,25 @@ class AuthController extends Controller
             'access_token' => $token,
         ]);
     }
+    public function changePassword(Request $request){
+        $validated = $request->validate([
+            'old_password' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+        ]);
 
+        if(!$validated['password'] === $validated['password_confirmation']) {
+            return response()->json([
+                'message' => 'Paroles nesakrīt',
+                ]);
+        }
+        User::find(auth()->user()->id)->update([
+            'password' => Hash::make($validated['password'])
+        ]);
+        return response()->json([
+            'message' => 'Parole veiksmīgi nomainīta',
+            ]);
+    }
     public function logout() {
         auth()->user()->token()->revoke();
 

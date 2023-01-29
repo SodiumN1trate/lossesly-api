@@ -17,7 +17,7 @@ class SpecialityController extends Controller
      */
     public function index()
     {
-        return SpecialityResource::Collection(Speciality::all());
+        return SpecialityResource::Collection(Speciality::orderBy('name')->get());
     }
 
     /**
@@ -68,5 +68,23 @@ class SpecialityController extends Controller
     {
         $speciality->delete();
         return new SpecialityResource($speciality);
+    }
+
+    public function uploadJSON(Request $request) {
+        $validated = $request->validate([
+            'file' => 'required|mimes:json',
+        ]);
+        $json = json_decode(file_get_contents($validated['file']), true);
+
+        foreach ($json['occupations'] as $row) {
+            Speciality::create([
+                'name' => ucfirst($row),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Datie lejupielādēti!',
+        ]);
     }
 }
