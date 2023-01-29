@@ -71,14 +71,17 @@ class AuthController extends Controller
             'password_confirmation' => 'required',
         ]);
 
-        if(!$validated["password"]==$validated["password_confirmation"]) {
-            return response()->json(["status" => "Zaebca"]);
+        if(!$validated['password'] === $validated['password_confirmation']) {
+            return response()->json([
+                'message' => 'Paroles nesakrīt',
+                ]);
         }
-        $user=User::find(auth()->user()->id);
-        $user->update([
-            'password' => Hash::make($validated["password"])
+        User::find(auth()->user()->id)->update([
+            'password' => Hash::make($validated['password'])
         ]);
-        return response()->json(["status" => "Parole veiksmīgi nomainīta"]);
+        return response()->json([
+            'message' => 'Parole veiksmīgi nomainīta',
+            ]);
     }
     public function logout() {
         auth()->user()->token()->revoke();
