@@ -38,7 +38,7 @@ class SpecialistApplicationController extends Controller
                 $attach = Attachment::create([
                     'name' => $file,
                 ]);
-                $app->attach($attach->id);
+                $app->attachments()->attach($attach->id);
             }
         }
         return new SpecialistApplicationResource($app);
