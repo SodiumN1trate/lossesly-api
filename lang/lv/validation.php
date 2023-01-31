@@ -162,6 +162,9 @@ return [
         'user_id' => 'Lietotājs',
         'comment' => 'Komentārs',
         'password_rep' => 'Atkārtoti parole',
+        'avatar' => 'Profila bildei',
+        'speciality_id' => 'Specialitāte',
+        'experience' => 'Pieredze',
     ],
 
 ];
