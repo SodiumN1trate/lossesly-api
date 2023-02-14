@@ -16,9 +16,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
+        return User::filter($request->all())->get();
     }
 
     /**
