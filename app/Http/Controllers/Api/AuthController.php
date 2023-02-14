@@ -67,15 +67,20 @@ class AuthController extends Controller
     public function changePassword(Request $request){
         $validated = $request->validate([
             'old_password' => 'required',
-            'password' => 'required',
-            'password_confirmation' => 'required',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8',
         ]);
 
-        if(!$validated['password'] === $validated['password_confirmation']) {
+        if(!Hash::check($validated['old_password'], auth()->user()->password)) {
             return response()->json([
-                'message' => 'Paroles nesakrīt',
-                ]);
+                'errors' => [
+                    'error' => [
+                        'Pašreizēja parole nesakrīt ar ievadīto!',
+                    ],
+                ],
+            ], 403);
         }
+
         User::find(auth()->user()->id)->update([
             'password' => Hash::make($validated['password'])
         ]);
