@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\StatusController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SpecialistApplicationController;
-
+use App\Http\Controllers\Api\UserJobController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\SpecialistApplicationController;
 |
 */
 Route::apiResources([
+    'user_jobs' => UserJobController::class,
+    'users' => UserController::class,
     'specialities' => SpecialityController::class,
     'genders' => GenderController::class,
     'statuses' => StatusController::class,
