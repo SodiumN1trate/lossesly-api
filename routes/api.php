@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\StatusController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SpecialistApplicationController;
-
+use App\Http\Controllers\Api\UserJobController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\SpecialistApplicationController;
 |
 */
 Route::apiResources([
+    'user_jobs' => UserJobController::class,
+    'users' => UserController::class,
     'specialities' => SpecialityController::class,
     'genders' => GenderController::class,
     'statuses' => StatusController::class,
@@ -33,6 +35,7 @@ Route::post('/login',[AuthController::class,'login']);
 
 
 Route::middleware(['auth:api'])->group(function () {
+    Route::post('/change_password',[AuthController::class,'changePassword']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::apiResources([
         'users' => UserController::class,

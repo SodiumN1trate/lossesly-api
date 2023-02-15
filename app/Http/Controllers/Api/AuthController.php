@@ -13,8 +13,8 @@ class AuthController extends Controller
 {
     public function register(Request $request){
         $validated = $request->validate([
-            'name' =>'required',
-            'surname' => 'required',
+            'name' =>'required|max:50',
+            'surname' => 'required|max:50',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ]);
@@ -64,7 +64,30 @@ class AuthController extends Controller
             'access_token' => $token,
         ]);
     }
+    public function changePassword(Request $request){
+        $validated = $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8',
+        ]);
 
+        if(!Hash::check($validated['old_password'], auth()->user()->password)) {
+            return response()->json([
+                'errors' => [
+                    'error' => [
+                        'Pašreizēja parole nesakrīt ar ievadīto!',
+                    ],
+                ],
+            ], 403);
+        }
+
+        User::find(auth()->user()->id)->update([
+            'password' => Hash::make($validated['password'])
+        ]);
+        return response()->json([
+            'message' => 'Parole veiksmīgi nomainīta',
+            ]);
+    }
     public function logout() {
         auth()->user()->token()->revoke();
 

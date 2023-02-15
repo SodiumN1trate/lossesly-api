@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserJob extends Model
 {
     protected $fillable = [
+        'job_name',
+        'job_description',
         'user_id',
         'expert_id',
         'status_id',

@@ -16,19 +16,19 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'surname'=>$this->surname,
-            'avatar' => isset($this->avatar) ? URL::signedRoute('avatar', ['user_id' => 1]) : 'https://www.w3schools.com/w3images/avatar2.png',
-            'email'=>$this->email,
-            'birthday'=>$this->birthday,
-            'location'=>$this->location,
-            'about_me'=>$this->about_me,
-            'is_expert'=>$this->is_expert,
-            'gender_id'=>$this->gender_id,
+            'id' => $this->id,
+            'name' => $this->name,
+            'surname'=> $this->surname,
+            'avatar' => isset($this->avatar) ? URL::signedRoute('avatar', ['user_id' => $this->id]) : 'https://www.w3schools.com/w3images/avatar2.png',
+            'email' => $this->email,
+            'birthday' => $this->birthday,
+            'location' => $this->location,
+            'about_me' => $this->about_me,
+            'is_expert' => $this->is_expert,
+            'gender_id' => $this->gender_id,
             'rating' => $this->rating,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

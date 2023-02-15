@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Attachment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'name',
+    ];
+
+    public function attachments() {
+        return $this->belongsToMany(Attachment::class);
+    }
 }
