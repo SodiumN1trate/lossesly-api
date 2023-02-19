@@ -15,14 +15,15 @@ class UserJobResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'job_name'=>$this->job_name,
-            'job_description'=>$this->job_description,
-            'user_id'=>$this->user_id,
-            'expert_id'=>$this->expert_id,
-            'status_id'=>$this->status_id,
-            'started'=>$this->started,
-            'end'=>$this->end
+            'id' => $this->id,
+            'job_name' => $this->job_name,
+            'job_description' => $this->job_description,
+            'user_id' => $this->user,
+            'expert' => $this->expert,
+            'status' => $this->status_id,
+            'started' => $this->started,
+            'price' => $this->price,
+            'end' => $this->end
         ];
     }
 }

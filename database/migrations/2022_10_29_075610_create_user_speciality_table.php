@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('speciality_id')->constrained();
             $table->integer('experience');
+            $table->decimal('price_per_hour');
             $table->timestamps();
         });
     }

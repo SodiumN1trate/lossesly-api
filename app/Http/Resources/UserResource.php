@@ -29,6 +29,7 @@ class UserResource extends JsonResource
             'rating' => $this->rating,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'specialities' => $this->specialities,
         ];
     }
 }

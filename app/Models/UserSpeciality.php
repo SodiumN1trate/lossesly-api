@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSpeciality extends Model
 {
+    use HasFactory;
+
+    protected $table = 'user_speciality';
+
     protected $fillable = [
         'user_id',
         'speciality_id',

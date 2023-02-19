@@ -19,22 +19,23 @@ use App\Http\Controllers\Api\UserJobController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResources([
-    'user_jobs' => UserJobController::class,
-    'users' => UserController::class,
-    'specialities' => SpecialityController::class,
-    'genders' => GenderController::class,
-    'statuses' => StatusController::class,
-    'mails' => MailController::class,
-]);
-
 Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar');
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
+Route::get('/specialists', [UserController::class, 'specialists']);
 
 Route::middleware(['auth:api'])->group(function () {
+    Route::apiResources([
+        'user_jobs' => UserJobController::class,
+        'users' => UserController::class,
+        'specialities' => SpecialityController::class,
+        'genders' => GenderController::class,
+        'statuses' => StatusController::class,
+        'mails' => MailController::class,
+    ]);
+
     Route::post('/change_password',[AuthController::class,'changePassword']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::apiResources([
@@ -43,7 +44,6 @@ Route::middleware(['auth:api'])->group(function () {
     ]);
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
-
 });
 
 

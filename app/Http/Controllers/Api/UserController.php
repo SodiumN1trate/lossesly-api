@@ -80,4 +80,8 @@ class UserController extends Controller
         $path = Storage::disk('local')->path('public/avatars/') . User::find($user_id)->avatar;
         return response()->file($path);
     }
+
+    public function specialists(Request $request) {
+        return UserResource::collection((User::filter($request->all())->withCount('specialities')->get())->where('specialities_count', '>', 0));
+    }
 }

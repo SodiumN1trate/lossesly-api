@@ -36,6 +36,10 @@ class User extends Authenticatable
     public function gender(){
         return $this->belongsTo(Gender::class, 'gender_id');
     }
+
+    public function specialities(){
+        return $this->belongsToMany(Speciality::class, 'user_speciality')->withPivot('price_per_hour');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
