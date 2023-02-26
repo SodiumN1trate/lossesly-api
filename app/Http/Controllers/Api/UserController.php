@@ -82,6 +82,6 @@ class UserController extends Controller
     }
 
     public function specialists(Request $request) {
-        return UserResource::collection((User::filter($request->all())->withCount('specialities')->get())->where('specialities_count', '>', 0));
+        return UserResource::collection((User::filter($request->all())->withCount('specialities')->withCount('applications')->get())->where('specialities_count', '>', 0)->where('applications_count', '>', 0));
     }
 }

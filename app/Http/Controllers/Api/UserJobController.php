@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserJobRequest;
+use App\Http\Resources\ReviewsResource;
 use App\Http\Resources\UserJobResource;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Models\UserJob;
 use Illuminate\Http\Request;
 
@@ -65,5 +68,13 @@ class UserJobController extends Controller
     {
         $userJob->delete();
         return new UserJobResource($userJob);
+    }
+
+    public function reviews(User $user) {
+        $reviews = UserJob::where('expert_id', $user->id)
+            ->whereNotNull('review')
+            ->paginate(3);
+
+        return ReviewsResource::collection($reviews);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SpecialistApplicationController;
 use App\Http\Controllers\Api\UserJobController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +21,8 @@ use App\Http\Controllers\Api\UserJobController;
 |
 */
 Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar');
+
+Route::get('/attachment/{attachment}', [SpecialistApplicationController::class, 'attachment'])->name('attachment');
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
@@ -44,6 +47,8 @@ Route::middleware(['auth:api'])->group(function () {
     ]);
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
+
+    Route::get('/reviews/{user}', [UserJobController::class, 'reviews']);
 });
 
 

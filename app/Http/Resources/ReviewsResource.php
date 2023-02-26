@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SpecialistApplicationResource extends JsonResource
+class ReviewsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,10 @@ class SpecialistApplicationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'speciality' => $this->speciality,
-            'experience' => $this->experience,
-            'attachments' => AttachmentResource::collection($this->attachments),
-            'status' => $this->status,
-            'user_id' => $this->user
+            'id' => $this->id,
+            'review' => $this->review,
+            'user' => new UserResource($this->user()->select(['name', 'surname', 'avatar', 'rating'])->first()),
+            'created_at' => (new \Carbon\Carbon($this->created_at))->format('d-m-Y H:m'),
         ];
     }
 }

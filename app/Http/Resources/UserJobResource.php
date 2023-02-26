@@ -23,7 +23,8 @@ class UserJobResource extends JsonResource
             'status' => $this->status_id,
             'started' => $this->started,
             'price' => $this->price,
-            'end' => $this->end
+            'end' => $this->end,
+            'review' => $this->review,
         ];
     }
 }
