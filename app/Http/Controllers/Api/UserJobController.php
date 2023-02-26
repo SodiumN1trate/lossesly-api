@@ -7,11 +7,13 @@ use App\Http\Requests\UserJobRequest;
 use App\Http\Resources\ReviewsResource;
 use App\Http\Resources\UserJobResource;
 use App\Http\Resources\UserResource;
+use App\Mail\UserJobMail;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\UserJob;
 use App\Models\UserJobsAttachment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class UserJobController extends Controller
@@ -49,6 +51,7 @@ class UserJobController extends Controller
                 ]);
             }
         }
+        Mail::to($user_job->expert->email)->send(new UserJobMail($user_job));
         return new UserJobResource($user_job);
     }
 
