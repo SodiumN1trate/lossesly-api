@@ -18,13 +18,14 @@ class UserJobResource extends JsonResource
             'id' => $this->id,
             'job_name' => $this->job_name,
             'job_description' => $this->job_description,
-            'user_id' => $this->user,
-            'expert' => $this->expert,
+            'user_id' => new UserResource($this->user),
+            'expert' => new UserResource($this->expert),
             'status' => $this->status_id,
             'started' => $this->started,
             'price' => $this->price,
             'end' => $this->end,
             'review' => $this->review,
+            'attachments' => UserJobAttachmentResource::collection($this->attachments),
         ];
     }
 }

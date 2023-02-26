@@ -27,4 +27,8 @@ class UserJob extends Model
     public function expert() {
         return $this->belongsTo(User::class, 'expert_id');
     }
+
+    public function attachments() {
+        return $this->hasMany(UserJobsAttachment::class, 'user_job_id');
+    }
 }

@@ -23,6 +23,8 @@ use App\Http\Controllers\Api\UserJobController;
 Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar');
 
 Route::get('/attachment/{attachment}', [SpecialistApplicationController::class, 'attachment'])->name('attachment');
+Route::get('/user_job_attachment/{attachment}', [UserJobController::class, 'attachment'])->name('user_job.attachment');
+
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);

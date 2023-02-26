@@ -7,9 +7,12 @@ use App\Http\Requests\UserJobRequest;
 use App\Http\Resources\ReviewsResource;
 use App\Http\Resources\UserJobResource;
 use App\Http\Resources\UserResource;
+use App\Models\Attachment;
 use App\Models\User;
 use App\Models\UserJob;
+use App\Models\UserJobsAttachment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserJobController extends Controller
 {
@@ -31,7 +34,22 @@ class UserJobController extends Controller
      */
     public function store(UserJobRequest $request)
     {
-        return new UserJobResource(UserJob::create($request->validated()));
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->user()->id;
+        $validated['status_id'] = 1;
+        $validated['started'] = now();
+        $user_job = UserJob::create($validated);
+        if(isset($validated['attachments'])) {
+            foreach ($validated['attachments'] as $attachment) {
+                $file = $attachment->hashName();
+                $attachment->store('public/user_jobs_attachments');
+                UserJobsAttachment::create([
+                    'name' => $file,
+                    'user_job_id' => $user_job->id,
+                ]);
+            }
+        }
+        return new UserJobResource($user_job);
     }
 
     /**
@@ -76,5 +94,14 @@ class UserJobController extends Controller
             ->paginate(3);
 
         return ReviewsResource::collection($reviews);
+    }
+
+    public function attachment(Request $request, $attachment)
+    {
+        error_log($attachment);
+        if (!$request->hasValidSignature()) {abort(401);}
+
+        $path = Storage::disk('local')->path('public/user_jobs_attachments/') . UserJobsAttachment::find($attachment)->name;
+        return response()->file($path);
     }
 }

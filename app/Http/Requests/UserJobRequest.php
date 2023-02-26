@@ -26,9 +26,10 @@ class UserJobRequest extends FormRequest
         return [
             'job_name' => 'required',
             'job_description' => 'required',
-            'user_id' => 'required',
+            'user_id' => '',
             'expert_id' => 'required',
-            'status_id' => 'required',
+            'status_id' => '',
+            'attachments' => 'array',
         ];
     }
 }
