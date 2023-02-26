@@ -43,6 +43,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::apiResources([
         'users' => UserController::class,
+        'user_jobs'=>UserJobController::class,
         'specialist_application' => SpecialistApplicationController::class,
     ]);
     Route::get('/logout', [AuthController::class, 'logout']);
