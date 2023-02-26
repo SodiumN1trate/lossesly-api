@@ -19,27 +19,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        User::create([
-//            'name' => 'Renārs',
-//            'surname' => 'Gausiņš',
-//            'email' => 'renarsgausins21@gmail.com',
-//            'password' => Hash::make('qwertyuiop'),
-//        ]);
-//
-//        User::create([
-//            'name' => 'Tests',
-//            'surname' => 'Tests',
-//            'email' => 'qwerty@gmail.com',
-//            'password' => Hash::make('qwertuyiop'),
-//        ]);
-//
-//        Status::create([
-//           'name' => 'Pabeigts',
-//        ]);
+        User::create([
+            'name' => 'Renārs',
+            'surname' => 'Gausiņš',
+            'email' => 'renarsgausins21@gmail.com',
+            'password' => Hash::make('qwertyuiop'),
+        ]);
 
-//        UserJob::factory()->count(100)->create();
+        User::create([
+            'name' => 'Tests',
+            'surname' => 'Tests',
+            'email' => 'qwerty@gmail.com',
+            'password' => Hash::make('qwertuyiop'),
+        ]);
+
+        Status::create([
+           'name' => 'Pabeigts',
+       ]);
+
+        User::factory()->count(100)->create();
+       UserJob::factory()->count(20)->create();
 //
-//        User::factory()->count(100)->create();
-        UserSpeciality::factory()->count(100)->create();
+
+//        UserSpeciality::factory()->count(100)->create();
     }
 }

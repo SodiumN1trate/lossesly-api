@@ -19,7 +19,7 @@ class UserJobFactory extends Factory
         return [
             'job_name' => $this->faker->title(),
             'job_description' => $this->faker->text(),
-            'user_id' => $this->faker->unique()->numberBetween(2, 20),
+            'user_id' => $this->faker->unique()->numberBetween(2, 100),
             'expert_id' => 1,
             'status_id' => 1,
             'started' => $this->faker->date(),

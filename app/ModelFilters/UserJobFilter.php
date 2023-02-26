@@ -11,31 +11,31 @@ class UserJobFilter extends ModelFilter
         return $this->where('id', $id);
     }
 
-    public function job_name($job_name)
+    public function jobName($job_name)
     {
-        return $this->where('job_name', $job_name);
+        return $this->whereLike('job_name', $job_name);
     }
 
-    public function job_description($job_description)
+    public function jobDescription($job_description)
     {
         return $this->where('job_description', $job_description);
     }
     public function price($price)
     {
-        return $this->where('price', $price);
+        return $this->whereBetween('price', $price);
     }
 
-    public function user_id($user_id)
+    public function user($user_id)
     {
         return $this->where('user_id', $user_id);
     }
 
-    public function expert_id($expert_id)
+    public function expert($expert_id)
     {
         return $this->where('expert_id', $expert_id);
     }
 
-    public function status_id($status_id)
+    public function status($status_id)
     {
         return $this->where('status_id', $status_id);
     }
