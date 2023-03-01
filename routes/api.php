@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GenderController;
+use App\Http\Controllers\Api\JobCancelController;
 use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\SpecialityController;
 use App\Http\Controllers\Api\StatusController;
@@ -31,6 +32,7 @@ Route::get('/specialists', [UserController::class, 'specialists']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResources([
+        'job_cancels' => JobCancelController::class,
         'user_jobs' => UserJobController::class,
         'users' => UserController::class,
         'specialities' => SpecialityController::class,
