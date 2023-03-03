@@ -32,14 +32,36 @@ class DatabaseSeeder extends Seeder
 //            'email' => 'qwerty@gmail.com',
 //            'password' => Hash::make('qwertuyiop'),
 //        ]);
-//
-//        Status::create([
-//           'name' => 'Pabeigts',
-//        ]);
 
-//        UserJob::factory()->count(100)->create();
-//
-//        User::factory()->count(100)->create();
-        UserSpeciality::factory()->count(100)->create();
+        Status::create([
+            'name' => 'Nav izskatīts',
+            'color' => '#999999',
+        ]);
+
+        Status::create([
+            'name' => 'Apstiprināts',
+            'color' => '#5ed929',
+        ]);
+
+        Status::create([
+            'name' => 'Sākts',
+            'color' => '#f1c232',
+        ]);
+
+
+        Status::create([
+            'name' => 'Pabeigts',
+            'color' => '#5b5b5b',
+        ]);
+
+        Status::create([
+            'name' => 'Gaida samaksu',
+            'color' => '#FF0000',
+        ]);
+
+//        User::factory()->count(1000)->create();
+//        UserJob::factory()->count(20)->create();
+
+        UserSpeciality::factory()->count(90)->create();
     }
 }

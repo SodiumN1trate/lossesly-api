@@ -7,6 +7,7 @@ use App\Http\Requests\UserJobRequest;
 use App\Http\Resources\ReviewsResource;
 use App\Http\Resources\UserJobResource;
 use App\Http\Resources\UserResource;
+use App\Mail\BillMail;
 use App\Mail\UserJobMail;
 use App\Models\Attachment;
 use App\Models\User;
@@ -26,6 +27,11 @@ class UserJobController extends Controller
     public function index()
     {
         return UserJobResource::collection(UserJob::where('user_id', auth()->user()->id)->paginate(8));
+    }
+
+    public function offers()
+    {
+        return UserJobResource::collection(UserJob::where('expert_id', auth()->user()->id)->paginate(8));
     }
 
     /**
@@ -75,7 +81,8 @@ class UserJobController extends Controller
      */
     public function update(UserJobRequest $request, UserJob $userJob)
     {
-        $userJob->update($request->validated());
+        $validated = $request->validated();
+        $userJob->update($validated);
         return new UserJobResource($userJob);
     }
 
@@ -106,5 +113,17 @@ class UserJobController extends Controller
 
         $path = Storage::disk('local')->path('public/user_jobs_attachments/') . UserJobsAttachment::find($attachment)->name;
         return response()->file($path);
+    }
+
+    public function setBill(Request $request, UserJob $user_job) {
+        $validated = $request->validate([
+            'price' => 'numeric|between:0,1000',
+        ]);
+        $validated['status_id'] = 5;
+        $user_job->update($validated);
+        Mail::to($user_job->expert->email)->send(new BillMail($user_job));
+        return response()->json([
+            'data' => 'Rēķins tika nosūtīts!'
+        ]);
     }
 }

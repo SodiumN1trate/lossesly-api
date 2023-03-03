@@ -49,8 +49,9 @@ Route::middleware(['auth:api'])->group(function () {
     ]);
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
-
+    Route::put('/set_bill/{user_job}', [UserJobController::class, 'setBill']);
     Route::get('/reviews/{user}', [UserJobController::class, 'reviews']);
+    Route::get('/offers', [UserJobController::class, 'offers']);
 });
 
 
