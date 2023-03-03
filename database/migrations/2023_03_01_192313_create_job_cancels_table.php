@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('job_cancels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_job_id')->constrained();
-            $table->string('reason');
+            $table->text('reason');
             $table->timestamps();
         });
     }
