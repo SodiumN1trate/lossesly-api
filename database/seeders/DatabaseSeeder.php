@@ -19,28 +19,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'name' => 'Renārs',
-            'surname' => 'Gausiņš',
-            'email' => 'renarsgausins21@gmail.com',
-            'password' => Hash::make('qwertyuiop'),
-        ]);
+//        User::create([
+//            'name' => 'Renārs',
+//            'surname' => 'Gausiņš',
+//            'email' => 'renarsgausins21@gmail.com',
+//            'password' => Hash::make('qwertyuiop'),
+//        ]);
+//
+//        User::create([
+//            'name' => 'Tests',
+//            'surname' => 'Tests',
+//            'email' => 'qwerty@gmail.com',
+//            'password' => Hash::make('qwertuyiop'),
+//        ]);
 
-        User::create([
-            'name' => 'Tests',
-            'surname' => 'Tests',
-            'email' => 'qwerty@gmail.com',
-            'password' => Hash::make('qwertuyiop'),
+        Status::create([
+            'name' => 'Nav izskatīts',
+            'color' => '#999999',
         ]);
 
         Status::create([
-           'name' => 'Pabeigts',
-       ]);
+            'name' => 'Apstiprināts',
+            'color' => '#5ed929',
+        ]);
 
-        User::factory()->count(100)->create();
-       UserJob::factory()->count(20)->create();
-//
+        Status::create([
+            'name' => 'Sākts',
+            'color' => '#f1c232',
+        ]);
 
-//        UserSpeciality::factory()->count(100)->create();
+
+        Status::create([
+            'name' => 'Pabeigts',
+            'color' => '#5b5b5b',
+        ]);
+
+        Status::create([
+            'name' => 'Gaida samaksu',
+            'color' => '#FF0000',
+        ]);
+
+//        User::factory()->count(1000)->create();
+//        UserJob::factory()->count(20)->create();
+
+        UserSpeciality::factory()->count(90)->create();
     }
 }

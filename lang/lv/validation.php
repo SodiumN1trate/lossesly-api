@@ -167,6 +167,7 @@ return [
         'experience' => 'Pieredze',
         'job_name' => 'Problēma',
         'job_description' =>  'Problēmas apraksts',
+        'price' => 'Summa',
     ],
 
 ];

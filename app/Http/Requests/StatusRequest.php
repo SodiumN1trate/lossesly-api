@@ -24,7 +24,8 @@ class StatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
+            'name' => 'required',
+            'color' => 'required',
         ];
     }
 }

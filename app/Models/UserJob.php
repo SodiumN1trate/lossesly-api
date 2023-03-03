@@ -29,6 +29,10 @@ class UserJob extends Model
         return $this->belongsTo(User::class, 'expert_id');
     }
 
+    public function status() {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
     public function attachments() {
         return $this->hasMany(UserJobsAttachment::class, 'user_job_id');
     }

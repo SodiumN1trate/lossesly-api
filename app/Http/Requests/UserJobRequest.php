@@ -24,10 +24,10 @@ class UserJobRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_name' => 'required',
-            'job_description' => 'required',
+            'job_name' => request()->isMethod('put') ? '' : 'required',
+            'job_description' => request()->isMethod('put') ? '' : 'required',
             'user_id' => '',
-            'expert_id' => 'required',
+            'expert_id' => request()->isMethod('put') ? '' : 'required',
             'status_id' => '',
             'attachments' => 'array',
         ];
