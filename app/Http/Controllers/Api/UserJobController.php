@@ -26,7 +26,7 @@ class UserJobController extends Controller
      */
     public function index()
     {
-        return UserJobResource::collection(UserJob::where('user_id', auth()->user()->id)->paginate(8));
+        return UserJobResource::collection(UserJob::filter(request()->all())->paginate(8));
     }
 
     public function offers()
