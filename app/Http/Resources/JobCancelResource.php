@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SpecialistApplicationResource extends JsonResource
+class JobCancelResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +14,10 @@ class SpecialistApplicationResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'speciality' => $this->speciality,
-            'experience' => $this->experience,
-            'attachments' => AttachmentResource::collection($this->attachments),
-            'status' => $this->status,
-            'user_id' => $this->user
+        return[
+            'id'=>$this->id,
+            'user_job_id'=>$this->userJob,
+            'reason'=>$this->reason,
         ];
     }
 }

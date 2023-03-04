@@ -36,6 +36,27 @@ class User extends Authenticatable
     public function gender(){
         return $this->belongsTo(Gender::class, 'gender_id');
     }
+
+    public function specialities(){
+        return $this->belongsToMany(Speciality::class, 'user_speciality')->withPivot('price_per_hour');
+    }
+
+    public function applications(){
+        return $this->hasMany(SpecialistApplication::class, 'user_id');
+    }
+
+//    public function expertJobs() {
+//        return $this->hasMany(UserJob::class, 'expert_id');
+//    }
+//
+//    public function userJobs() {
+//        return $this->hasMany(UserJob::class, 'user_id');
+//    }
+
+//    public function comments() {
+//        return $this->hasManyThrough(Review::class, UserJob::class, 'expert_id', 'user_jobs_id');
+//    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

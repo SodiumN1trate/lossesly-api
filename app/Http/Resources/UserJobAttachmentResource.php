@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
-class SpecialistApplicationResource extends JsonResource
+class UserJobAttachmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +16,8 @@ class SpecialistApplicationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'speciality' => $this->speciality,
-            'experience' => $this->experience,
-            'attachments' => AttachmentResource::collection($this->attachments),
-            'status' => $this->status,
-            'user_id' => $this->user
+            'name' => $this->name,
+            'url' =>  URL::signedRoute('user_job.attachment', ['attachment' => $this->id]),
         ];
     }
 }

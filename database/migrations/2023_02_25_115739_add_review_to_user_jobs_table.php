@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_speciality', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('speciality_id')->constrained();
-            $table->integer('experience');
-            $table->decimal('price_per_hour');
-            $table->timestamps();
+        Schema::table('user_jobs', function (Blueprint $table) {
+            $table->text('review')->nullable();
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_speciality');
+        Schema::table('user_jobs', function (Blueprint $table) {
+            $table->dropColumn('review');
+        });
     }
 };

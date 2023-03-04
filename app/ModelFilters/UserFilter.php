@@ -34,15 +34,24 @@ class UserFilter extends ModelFilter
         return $this->where('gender', $gender);
     }
 
-    public function speciality($speciality)
+    public function rating($rating)
     {
-        return $this->where('speciality', $speciality);
+        return $this->where('rating', $rating);
     }
 
-    public function onlyShowDeletedForAdmins()
+    public function location($location)
     {
-        if (Auth::user()->isAdmin()) {
-            $this->withTrashed();
-        }
+        return $this->where('location', $location);
     }
+
+    public function speciality($speciality)
+    {
+        return $this->related('specialities', 'speciality_id', '=', $speciality);
+    }
+
+    public function price($price)
+    {
+        return $this->related('specialities', 'price_per_hour', '=', $price);
+    }
+
 }

@@ -29,6 +29,11 @@ class UserResource extends JsonResource
             'rating' => $this->rating,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'specialities' => $this->specialities,
+            'applications' => new SpecialistApplicationResource($this->applications[0] ?? null),
+//            'user_jobs' => UserJobResource::collection($this->userJobs),
+//            'expert_jobs' => UserJobResource::collection($this->expertJobs),
+//            'comments' => $this->comments,
         ];
     }
 }

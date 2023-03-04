@@ -165,6 +165,9 @@ return [
         'avatar' => 'Profila bildei',
         'speciality_id' => 'Specialitāte',
         'experience' => 'Pieredze',
+        'job_name' => 'Problēma',
+        'job_description' =>  'Problēmas apraksts',
+        'price' => 'Summa',
     ],
 
 ];

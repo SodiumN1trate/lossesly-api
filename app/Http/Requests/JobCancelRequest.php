@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserJobRequest extends FormRequest
+class JobCancelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class UserJobRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_name' => request()->isMethod('put') ? '' : 'required',
-            'job_description' => request()->isMethod('put') ? '' : 'required',
-            'user_id' => '',
-            'expert_id' => request()->isMethod('put') ? '' : 'required',
-            'status_id' => '',
+            'user_job_id'=>'required',
+            'reason'=>'required',
             'attachments' => 'array',
         ];
     }

@@ -8,6 +8,7 @@ use App\Http\Resources\SpecialistApplicationResource;
 use App\Models\Attachment;
 use App\Models\SpecialistApplication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SpecialistApplicationController extends Controller
 {
@@ -30,6 +31,8 @@ class SpecialistApplicationController extends Controller
     public function store(SpecialistApplicationRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = auth()->user()->id;
+        $validated['status'] = false;
         $app = SpecialistApplication::create($validated);
         if(isset($validated['attachments'])) {
             foreach ($validated['attachments'] as $attachment) {
@@ -81,5 +84,13 @@ class SpecialistApplicationController extends Controller
         $app = SpecialistApplication::find($id);
         $app->delete();
         return new SpecialistApplicationResource($app);
+    }
+
+    public function attachment(Request $request, Attachment $attachment)
+    {
+        if (!$request->hasValidSignature()) {abort(401);}
+
+        $path = Storage::disk('local')->path('public/attachments/') . $attachment->name;
+        return response()->file($path);
     }
 }

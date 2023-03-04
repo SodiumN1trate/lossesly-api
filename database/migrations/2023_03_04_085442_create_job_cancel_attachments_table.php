@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_speciality', function (Blueprint $table) {
+        Schema::create('job_cancel_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('speciality_id')->constrained();
-            $table->integer('experience');
-            $table->decimal('price_per_hour');
+            $table->string('name');
+            $table->foreignId('job_cancel_id')->constrained('job_cancels');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_speciality');
+        Schema::dropIfExists('job_cancel_attachments');
     }
 };

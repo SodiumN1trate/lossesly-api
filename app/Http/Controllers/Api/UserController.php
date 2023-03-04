@@ -25,11 +25,11 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return UserResource
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function store(UserRequest $request)
     {
-        return new UserResource(User::create($request->validated()));
+        return UserResource::collection(User::filter($request->all())->get());
     }
 
     /**
@@ -79,5 +79,9 @@ class UserController extends Controller
 
         $path = Storage::disk('local')->path('public/avatars/') . User::find($user_id)->avatar;
         return response()->file($path);
+    }
+
+    public function specialists(Request $request) {
+        return UserResource::collection((User::filter($request->all())->withCount('specialities')->withCount('applications')->get())->where('specialities_count', '>', 0)->where('applications_count', '>', 0));
     }
 }

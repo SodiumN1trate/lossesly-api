@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_speciality', function (Blueprint $table) {
-            $table->id();
+        Schema::table('specialist_applications', function (Blueprint $table) {
+            $table->boolean('status');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('speciality_id')->constrained();
-            $table->integer('experience');
-            $table->decimal('price_per_hour');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_speciality');
+        Schema::table('specialist_applications', function (Blueprint $table) {
+            $table->dropColumn('status');
+            $table->dropColumn('user_id');
+        });
     }
 };
