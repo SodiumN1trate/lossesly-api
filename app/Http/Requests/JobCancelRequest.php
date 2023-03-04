@@ -26,6 +26,7 @@ class JobCancelRequest extends FormRequest
         return [
             'user_job_id'=>'required',
             'reason'=>'required',
+            'attachments' => 'array',
         ];
     }
 }

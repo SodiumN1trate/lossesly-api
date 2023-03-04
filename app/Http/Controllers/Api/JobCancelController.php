@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\JobCancelRequest;
 use App\Http\Resources\JobCancelResource;
 use App\Models\JobCancel;
+use App\Models\JobCancelAttachment;
 use Illuminate\Http\Request;
 
 class JobCancelController extends Controller
@@ -28,8 +29,20 @@ class JobCancelController extends Controller
      */
     public function store(JobCancelRequest $request)
     {
-        $jobCancel = JobCancel::create($request->validated());
-        return new JobCancelResource($jobCancel);
+        $validated = $request->validated();
+        $job_cancel = JobCancel::create($request->validated());
+        if(isset($validated['attachments'])) {
+            foreach ($validated['attachments'] as $attachment) {
+                $file = $attachment->hashName();
+                $attachment->store('public/job_cancel_attachments');
+                $a = JobCancelAttachment::create([
+                    'name' => $file,
+                    'job_cancel_id' => $job_cancel->id,
+                ]);
+            }
+        }
+
+        return new JobCancelResource($job_cancel);
 
     }
 
