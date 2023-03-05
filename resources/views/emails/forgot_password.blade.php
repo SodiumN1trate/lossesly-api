@@ -1,6 +1,6 @@
 <div class="navigation">
     <div class="logo">
-        <img src="http://localhost:3000/_nuxt/assets/images/logo.png" width="40px" height="49px">
+        <img src="{{ config('app.app') . '/_nuxt/assets/images/logo.png'  }}" width="40px" height="49px">
         <span class="logo-text" style="font-size: 24px;color: #E2571C;font-family: Arial, serif;">Lossesly</span>
     </div>
 </div>
