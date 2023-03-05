@@ -50,7 +50,9 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($validated)) {
+        $user = User::where('email', $validated)->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
                 'errors' => [
                     'error' => [
@@ -60,9 +62,9 @@ class AuthController extends Controller
             ], 403);
         }
 
-        $token = auth()->user()->createToken('accessToken')->accessToken;
+        $token = $user->createToken('accessToken')->accessToken;
         return response()->json([
-            'user' => new UserResource(auth()->user()),
+            'user' => new UserResource($user),
             'access_token' => $token,
         ]);
     }

@@ -26,7 +26,6 @@ Route::get('/avatar/{user_id}', [UserController::class, 'avatar'])->name('avatar
 Route::get('/attachment/{attachment}', [SpecialistApplicationController::class, 'attachment'])->name('attachment');
 Route::get('/user_job_attachment/{attachment}', [UserJobController::class, 'attachment'])->name('user_job.attachment');
 
-
 Route::post('/register', [AuthController::class,'register']);
 Route::post('/login', [AuthController::class,'login']);
 
@@ -36,33 +35,63 @@ Route::post('/forgot_password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset_password/{user}', [AuthController::class, 'resetPassword'])->name('reset_password');
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResources([
-        'job_cancels' => JobCancelController::class,
-        'user_jobs' => UserJobController::class,
-        'users' => UserController::class,
-        'specialities' => SpecialityController::class,
-        'genders' => GenderController::class,
-        'statuses' => StatusController::class,
-        'mails' => MailController::class,
-    ]);
+
+    Route::group(['middleware' => ['can:manage.users']], function () {
+        Route::apiResource('users', UserController::class)->except('update');
+    });
+    Route::apiResource('users', UserController::class)->only('update', 'show');
+
+    Route::group(['middleware' => ['can:manage.applications']], function () {
+        Route::apiResource('specialist_application', SpecialistApplicationController::class);
+    });
+
+    Route::group(['middleware' => ['can:manage.user_jobs']], function () {
+        Route::apiResource('user_jobs', UserJobController::class)->except('show', 'store', 'index');
+        Route::apiResource('statuses', StatusController::class);
+    });
+    Route::apiResource('user_jobs', UserJobController::class)->only('show', 'store', 'index');
+    Route::group(['middleware' => ['can:manage.job_cancel']], function () {
+        Route::apiResource('job_cancels', JobCancelController::class)->except('store');
+    });
+    Route::apiResource('job_cancels', JobCancelController::class)->only('store');
+    Route::group(['middleware' => ['can:manage.support']], function () {
+        Route::apiResource('mails', MailController::class);
+    });
+
+    Route::group(['middleware' => ['can:manage.specialities']], function () {
+        Route::apiResource('specialities', SpecialityController::class)->except('index');
+        Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
+    });
+    Route::apiResource('specialities', SpecialityController::class)->only('index');
+    Route::group(['middleware' => ['can:start.user_job']], function () {
+        Route::get('/user_jobs/start/{user_job}', [UserJobController::class, 'startJob']);
+    });
+
+    Route::group(['middleware' => ['can:end.user_job']], function () {
+        Route::get('/user_jobs/end/{user_job}', [UserJobController::class, 'startJob']);
+    });
+
+    Route::group(['middleware' => ['can:accept.user_job']], function () {
+        Route::get('/user_jobs/accept/{user_job}', [UserJobController::class, 'startJob']);
+    });
+
+    Route::group(['middleware' => ['can:decline.user_job']], function () {
+        Route::get('/user_jobs/decline/{user_job}', [UserJobController::class, 'startJob']);
+    });
+
+    Route::group(['middleware' => ['can:create.bill']], function () {
+        Route::put('/set_bill/{user_job}', [UserJobController::class, 'setBill']);
+    });
 
     Route::post('/change_password',[AuthController::class,'changePassword']);
     Route::get('/user', [AuthController::class, 'user']);
-    Route::apiResources([
-        'users' => UserController::class,
-        'user_jobs'=>UserJobController::class,
-        'specialist_application' => SpecialistApplicationController::class,
-    ]);
     Route::get('/logout', [AuthController::class, 'logout']);
-    Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
-    Route::put('/set_bill/{user_job}', [UserJobController::class, 'setBill']);
+
     Route::get('/reviews/{user}', [UserJobController::class, 'reviews']);
     Route::get('/offers', [UserJobController::class, 'offers'])->name('offers');
+
     Route::get('/user_jobs/payment/session_create/{user_job}', [UserJobController::class, 'sessionCreate']);
     Route::get('/user_jobs/payment/session_handle', [UserJobController::class, 'handleCheckout']);
-    Route::get('/user_jobs/start/{user_job}', [UserJobController::class, 'startJob']);
-    Route::get('/user_jobs/end/{user_job}', [UserJobController::class, 'endJob']);
-    Route::get('/user_jobs/accept/{user_job}', [UserJobController::class, 'acceptJob']);
-    Route::get('/user_jobs/decline/{user_job}', [UserJobController::class, 'declineJob']);
+
 });
 

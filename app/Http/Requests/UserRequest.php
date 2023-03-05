@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'surname' => 'required|max:255',
-            'email' => 'required|max:255|email|unique:users',
+            'email' => request()->isMethod('put') ? 'required|email|max:255' : 'required|max:255|email|unique:users',
             'password' => 'sometimes|max:255',
             'avatar' => 'sometimes|mimes:jpg,jpeg,png|max:12048',
         ];
