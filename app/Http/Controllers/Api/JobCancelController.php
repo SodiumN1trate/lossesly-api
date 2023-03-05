@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobCancelRequest;
 use App\Http\Resources\JobCancelResource;
+use App\Mail\JobCancelMail;
+use App\Mail\UserJobMail;
 use App\Models\JobCancel;
 use App\Models\JobCancelAttachment;
+use App\Models\UserJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class JobCancelController extends Controller
 {
@@ -31,17 +35,19 @@ class JobCancelController extends Controller
     {
         $validated = $request->validated();
         $job_cancel = JobCancel::create($request->validated());
+        $user_job = UserJob::find($validated['user_job_id']);
+        $user_job->update(['status_id' => 6]);
         if(isset($validated['attachments'])) {
             foreach ($validated['attachments'] as $attachment) {
                 $file = $attachment->hashName();
                 $attachment->store('public/job_cancel_attachments');
-                $a = JobCancelAttachment::create([
+                JobCancelAttachment::create([
                     'name' => $file,
                     'job_cancel_id' => $job_cancel->id,
                 ]);
             }
         }
-
+        Mail::to([$user_job->user->email, $user_job->expert->email])->send(new JobCancelMail($user_job, $job_cancel));
         return new JobCancelResource($job_cancel);
 
     }

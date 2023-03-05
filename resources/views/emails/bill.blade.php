@@ -45,7 +45,9 @@
             <strong><h2>Cena:</h2></strong>
             <h3>{{ $user_job->price }}€</h3>
         </div>
+        <p>Rēķinu vari samaksāt savā profilā</p>
     </div>
+
 </div>
 
 <style>

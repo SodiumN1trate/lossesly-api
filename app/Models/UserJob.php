@@ -19,6 +19,7 @@ class UserJob extends Model
         'status_id',
         'started',
         'end',
+        'payment_session_id',
     ];
 
     public function user() {

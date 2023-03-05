@@ -59,6 +59,11 @@ class DatabaseSeeder extends Seeder
             'color' => '#FF0000',
         ]);
 
+        Status::create([
+            'name' => 'Atcelts',
+            'color' => '#FF0000',
+        ]);
+
 //        User::factory()->count(1000)->create();
 //        UserJob::factory()->count(20)->create();
 

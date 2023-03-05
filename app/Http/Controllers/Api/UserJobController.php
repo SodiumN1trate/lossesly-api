@@ -8,6 +8,7 @@ use App\Http\Resources\ReviewsResource;
 use App\Http\Resources\UserJobResource;
 use App\Http\Resources\UserResource;
 use App\Mail\BillMail;
+use App\Mail\StatusMail;
 use App\Mail\UserJobMail;
 use App\Models\Attachment;
 use App\Models\User;
@@ -26,7 +27,7 @@ class UserJobController extends Controller
      */
     public function index()
     {
-        return UserJobResource::collection(UserJob::filter(request()->all())->paginate(8));
+        return UserJobResource::collection(UserJob::filter(request()->all())->orderBy('id', 'desc')->paginate(8));
     }
 
     public function offers()
@@ -125,5 +126,91 @@ class UserJobController extends Controller
         return response()->json([
             'data' => 'Rēķins tika nosūtīts!'
         ]);
+    }
+
+    public function sessionCreate(Request $request, UserJob $user_job) {
+        if (!isset($user_job->price)) {
+            return response()->json([
+                'data' => 'Darbam nav vēl izrakstīts čeks',
+            ], 400);
+        }
+        $bill = \Stripe\Checkout\Session::create([
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'unit_amount_decimal' => round($user_job->price * 100),
+                    'product_data' => [
+                        'name' => 'Maksa par darbu',
+                        'description' => "Darba id: $user_job->id",
+                    ]
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => config('app.app') . "/bill/success?session_id={CHECKOUT_SESSION_ID}",
+            'cancel_url' =>  config('app.app') . '/bill/cancel',
+        ]);
+
+        $user_job->update(['payment_session_id' => $bill->id]);
+
+        return response()->json([
+            'data' => [
+                'url' => $bill->url,
+            ],
+        ]);
+
+    }
+
+    public function handleCheckout(Request $request) {
+        $checkoutSession = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
+        $job = UserJob::where('payment_session_id', $request->get('session_id'))->firstOrFail();
+        if($checkoutSession->payment_status === 'paid' && $checkoutSession->status === 'complete') {
+            $job->update([
+                'status_id' => 4,
+            ]);
+            Mail::to([$job->user->email, $job->expert->email])->send(new StatusMail($job));
+            return response()->json([
+                'data' => $checkoutSession,
+            ]);
+        }
+
+        return response()->json([
+            'data' => 'Kaut kas nogāja greizi',
+        ], 400);
+    }
+
+    public function startJob(UserJob $user_job) {
+        $user_job->started = \Carbon\Carbon::now();
+        $user_job->status_id = 3;
+        $user_job->save();
+        Mail::to($user_job->user->email)->send(new StatusMail($user_job));
+        return new UserJobResource($user_job);
+    }
+
+    public function endJob(UserJob $user_job) {
+        if (!isset($user_job->started)) {
+            return response()->json([
+                'data' => 'Darbs sākumā ir jāuzsāk',
+            ], 400);
+        }
+        $user_job->end = \Carbon\Carbon::now();
+        $user_job->status_id = 5;
+        $user_job->save();
+        Mail::to($user_job->user->email)->send(new StatusMail($user_job));
+        return new UserJobResource($user_job);
+    }
+
+    public function acceptJob(UserJob $user_job) {
+        $user_job->status_id = 2;
+        $user_job->save();
+        Mail::to($user_job->user->email)->send(new StatusMail($user_job));
+        return new UserJobResource($user_job);
+    }
+
+    public function declineJob(UserJob $user_job) {
+        $user_job->status_id = 6;
+        $user_job->save();
+        Mail::to($user_job->user->email)->send(new BillMail($user_job));
+        return new UserJobResource($user_job);
     }
 }

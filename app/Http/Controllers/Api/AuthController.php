@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\ForgotPassword;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -68,7 +70,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'old_password' => 'required',
             'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required|min:8',
+            'password_confirmation' => 'required',
         ]);
 
         if(!Hash::check($validated['old_password'], auth()->user()->password)) {
@@ -101,5 +103,31 @@ class AuthController extends Controller
 
     public function user() {
         return response()->json(new UserResource(auth()->user()));
+    }
+
+    public function forgotPassword(Request $request) {
+        $validated = $request->validate([
+            'email' => 'required|email',
+        ]);
+        $user = User::where('email', $validated['email'])->firstOrFail();
+        Mail::to($user->email)->send(new ForgotPassword($user));
+
+        return response()->json([
+            'data' => 'Jums uz e-pastu tika nosūtīta paroles maiņas adrese!'
+        ]);
+    }
+
+    public function resetPassword(Request $request, User $user) {
+        if (! $request->hasValidSignature()) { abort(401); }
+        $validated = $request->validate([
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+
+        $user->update(['password' => Hash::make($validated['password'])]);
+
+        return response()->json([
+            'data' => 'Parole veiksmīgi nomainīta'
+        ]);
     }
 }
