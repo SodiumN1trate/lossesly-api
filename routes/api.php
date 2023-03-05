@@ -27,10 +27,13 @@ Route::get('/attachment/{attachment}', [SpecialistApplicationController::class, 
 Route::get('/user_job_attachment/{attachment}', [UserJobController::class, 'attachment'])->name('user_job.attachment');
 
 
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/login',[AuthController::class,'login']);
+Route::post('/register', [AuthController::class,'register']);
+Route::post('/login', [AuthController::class,'login']);
 
 Route::get('/specialists', [UserController::class, 'specialists']);
+
+Route::post('/forgot_password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset_password/{user}', [AuthController::class, 'resetPassword'])->name('reset_password');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResources([
@@ -54,7 +57,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/specialities/upload_json', [SpecialityController::class, 'uploadJSON']);
     Route::put('/set_bill/{user_job}', [UserJobController::class, 'setBill']);
     Route::get('/reviews/{user}', [UserJobController::class, 'reviews']);
-    Route::get('/offers', [UserJobController::class, 'offers']);
+    Route::get('/offers', [UserJobController::class, 'offers'])->name('offers');
+    Route::get('/user_jobs/payment/session_create/{user_job}', [UserJobController::class, 'sessionCreate']);
+    Route::get('/user_jobs/payment/session_handle', [UserJobController::class, 'handleCheckout']);
+    Route::get('/user_jobs/start/{user_job}', [UserJobController::class, 'startJob']);
+    Route::get('/user_jobs/end/{user_job}', [UserJobController::class, 'endJob']);
+    Route::get('/user_jobs/accept/{user_job}', [UserJobController::class, 'acceptJob']);
+    Route::get('/user_jobs/decline/{user_job}', [UserJobController::class, 'declineJob']);
 });
-
 
