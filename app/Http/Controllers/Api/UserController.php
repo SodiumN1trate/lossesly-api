@@ -48,11 +48,28 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return UserResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UserRequest $request, User $user)
     {
+        if(auth()->user()->id !== $user->id && !auth()->user()->hasAnyRole(['Administrators', 'Galvenais administrators'])) {
+            return response()->json([
+                'data' => 'Jūs to nevarat izdarīt'
+            ], 401);
+        }
         $validated = $request->validated();
+        $user_with_email = User::where('email', $validated['email'])->first();
+        if(isset($user_with_email) && $user_with_email->id !== $user->id) {
+            return response()->json([
+                'errors' =>
+                    [
+                        'email' =>
+                            [
+                                'E-pasts jau ir aizņemts.'
+                            ]
+                    ]
+            ], 422);
+        }
         if(isset($validated['avatar'])) {
             $avatar = $validated['avatar'];
             $validated['avatar'] = $avatar->hashName();
