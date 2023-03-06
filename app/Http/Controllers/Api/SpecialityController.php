@@ -17,6 +17,9 @@ class SpecialityController extends Controller
      */
     public function index()
     {
+        if(request()->input('page')) {
+            return SpecialityResource::Collection(Speciality::orderBy('name')->paginate(10));
+        }
         return SpecialityResource::Collection(Speciality::orderBy('name')->get());
     }
 

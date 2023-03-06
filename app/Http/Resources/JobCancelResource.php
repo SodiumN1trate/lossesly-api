@@ -15,9 +15,10 @@ class JobCancelResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'id'=>$this->id,
-            'user_job_id'=>$this->userJob,
-            'reason'=>$this->reason,
+            'id' => $this->id,
+            'user_job_id' => $this->userJob,
+            'reason' => $this->reason,
+            'created_at' => (new \Carbon\Carbon($this->created_at))->format('d-m-Y'),
         ];
     }
 }

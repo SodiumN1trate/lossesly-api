@@ -42,8 +42,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('users', UserController::class)->only('update', 'show');
 
     Route::group(['middleware' => ['can:manage.applications']], function () {
-        Route::apiResource('specialist_application', SpecialistApplicationController::class);
+        Route::apiResource('specialist_application', SpecialistApplicationController::class)->except('store');
     });
+    Route::apiResource('specialist_application', SpecialistApplicationController::class)->only('store');
+
+    Route::get('/specialist_application/{attachment}/{status}', [SpecialistApplicationController::class, 'changeStatus']);
 
     Route::group(['middleware' => ['can:manage.user_jobs']], function () {
         Route::apiResource('user_jobs', UserJobController::class)->except('show', 'store', 'index');
@@ -82,6 +85,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::group(['middleware' => ['can:create.bill']], function () {
         Route::put('/set_bill/{user_job}', [UserJobController::class, 'setBill']);
     });
+
+    Route::get('/permissions', [UserController::class, 'getPermissions']);
+    Route::get('/roles', [UserController::class, 'getRoles']);
 
     Route::post('/change_password',[AuthController::class,'changePassword']);
     Route::get('/user', [AuthController::class, 'user']);

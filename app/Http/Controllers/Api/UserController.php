@@ -8,6 +8,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -18,7 +20,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return User::filter($request->all())->get();
+        return UserResource::collection(User::filter($request->all())->paginate(10));
     }
 
     /**
@@ -100,5 +102,13 @@ class UserController extends Controller
 
     public function specialists(Request $request) {
         return UserResource::collection((User::filter($request->all())->withCount('specialities')->withCount('applications')->get())->where('specialities_count', '>', 0)->where('applications_count', '>', 0));
+    }
+
+    public function getPermissions() {
+        return Permission::all();
+    }
+
+    public function getRoles() {
+        return Role::all();
     }
 }

@@ -34,6 +34,8 @@ class UserResource extends JsonResource
 //            'user_jobs' => UserJobResource::collection($this->userJobs),
 //            'expert_jobs' => UserJobResource::collection($this->expertJobs),
 //            'comments' => $this->comments,
+            'roles' => $this->getRoleNames(),
+            'permissions' => $this->getAllPermissions(),
         ];
     }
 }

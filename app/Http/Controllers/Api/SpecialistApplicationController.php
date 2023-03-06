@@ -19,7 +19,7 @@ class SpecialistApplicationController extends Controller
      */
     public function index()
     {
-        return SpecialistApplicationResource::collection(SpecialistApplication::all());
+        return SpecialistApplicationResource::collection(SpecialistApplication::paginate(10));
     }
 
     /**
@@ -92,5 +92,10 @@ class SpecialistApplicationController extends Controller
 
         $path = Storage::disk('local')->path('public/attachments/') . $attachment->name;
         return response()->file($path);
+    }
+
+    public function changeStatus(SpecialistApplication $attachment, $status) {
+        $attachment->update(['status' => (bool) $status]);
+        return new SpecialistApplicationResource($attachment);
     }
 }
