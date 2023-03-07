@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $user = User::where('email', $validated)->first();
+        $user = User::create($validated);
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
