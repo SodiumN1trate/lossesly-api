@@ -10,10 +10,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Filterable, Billable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, Filterable, Billable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

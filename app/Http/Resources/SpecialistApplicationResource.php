@@ -15,11 +15,13 @@ class SpecialistApplicationResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'speciality' => $this->speciality,
             'experience' => $this->experience,
             'attachments' => AttachmentResource::collection($this->attachments),
             'status' => $this->status,
-            'user_id' => $this->user
+            'user_id' => $this->user,
+            'created_at' => (new \Carbon\Carbon($this->created_at))->format('d-m-Y'),
         ];
     }
 }

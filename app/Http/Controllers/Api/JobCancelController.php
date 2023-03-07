@@ -22,7 +22,7 @@ class JobCancelController extends Controller
      */
     public function index()
     {
-        return JobCancelResource::Collection(JobCancel::all());
+        return JobCancelResource::Collection(JobCancel::paginate(10));
     }
 
     /**
