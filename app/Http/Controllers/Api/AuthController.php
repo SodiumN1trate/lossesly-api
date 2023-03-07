@@ -26,7 +26,7 @@ class AuthController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
-
+        $user->assignRole('Lietotājs');
         return response()->json([
             'user' => new UserResource($user)
         ]);
