@@ -27,21 +27,8 @@ class AuthController extends Controller
 
         $user = User::create($validated);
 
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json([
-                'errors' => [
-                    'error' => [
-                        'Tāds lietotājs neeksistē!',
-                    ],
-                ],
-            ], 403);
-        }
-
-        $token = $user->createToken('accessToken')->accessToken;
-
         return response()->json([
-            'user' => new UserResource(auth()->user()),
-            'access_token' => $token,
+            'user' => new UserResource($user)
         ]);
     }
     public function login(Request $request) {
